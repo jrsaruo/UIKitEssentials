@@ -31,7 +31,11 @@ public final class RootViewController: UIViewController {
     /// - Parameters:
     ///   - destinationVC: The view controller to transition to.
     ///   - animated: If `true`, the transition will be animated with a cross dissolve.
-    public func transition(to destinationVC: UIViewController, animated: Bool) {
+    ///   - completion: A closure to execute at the end of the transition.
+    ///                 This closure has no return value and takes a single `Bool` argument that indicates whether or not the transition actually finished.
+    public func transition(to destinationVC: UIViewController,
+                           animated: Bool,
+                           completion: ((_ completed: Bool) -> Void)? = nil) {
         assert(children.count <= 1)
         if let currentChild = children.first {
             currentChild.willMove(toParent: nil)
@@ -43,17 +47,22 @@ public final class RootViewController: UIViewController {
         view.addSubview(destinationVC.view)
         destinationVC.view.frame = view.bounds
         
+        func finishTransition(completed: Bool) {
+            if completed {
+                destinationVC.didMove(toParent: self)
+            }
+            completion?(completed)
+        }
+        
         if animated {
             UIView.transition(with: view,
                               duration: 0.3,
                               options: .transitionCrossDissolve,
                               animations: nil) { completed in
-                if completed {
-                    destinationVC.didMove(toParent: self)
-                }
+                finishTransition(completed: completed)
             }
         } else {
-            destinationVC.didMove(toParent: self)
+            finishTransition(completed: true)
         }
     }
 }
