@@ -27,5 +27,5 @@ jobs:
           }}
         run: >
           gh pr review $PR_URL
-          --comment
+          --request-changes
           --body '⚠️ You are attempting to merge a branch that is neither release nor hotfix into the main branch.'
