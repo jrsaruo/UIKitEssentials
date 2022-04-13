@@ -1,4 +1,4 @@
-name: Healthy PR
+name: PR to main
 
 on:
   pull_request:
@@ -11,11 +11,10 @@ on:
       - main
 
 jobs:
-  pr_health_check:
+  review:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Check the PR base branch
+      - name: Validate the head branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
