@@ -25,7 +25,7 @@ public final class RootViewController: UIViewController {
     
     // MARK: - Methods
     
-    /// Transition to the specified view controller.
+    /// Transitions to the specified view controller.
     ///
     /// The source view controller instance will be destroyed.
     /// - Parameters:
