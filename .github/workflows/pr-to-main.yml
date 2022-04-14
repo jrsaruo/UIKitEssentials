@@ -24,6 +24,7 @@ jobs:
             !startsWith(env.HEAD_BRANCH, 'release') &&
             !startsWith(env.HEAD_BRANCH, 'hotfix')
           }}
-        run: |-
-          gh pr review $PR_URL --comment --body '⚠️ You are attempting to merge a branch that is neither release nor hotfix into the main branch.'
-          exit 1
+        run: >
+          gh pr review $PR_URL
+          --comment
+          --body '⚠️ You are attempting to merge a branch that is neither release nor hotfix into the main branch.'
