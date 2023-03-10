@@ -11,11 +11,13 @@ import UIKit
 extension NSCollectionLayoutSize {
     
     /// Creates a size that fills the containing group.
+    @inlinable
     public static var full: Self {
         .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
     }
     
     /// Creates a size that is computed as a fraction of the width and height of the containing group.
+    @inlinable
     public static func fractional(width: CGFloat, height: CGFloat) -> Self {
         .init(widthDimension: .fractionalWidth(width), heightDimension: .fractionalHeight(height))
     }
@@ -23,11 +25,13 @@ extension NSCollectionLayoutSize {
     /// Creates a size with estimated point values.
     ///
     /// The final size is determined when the content is rendered.
+    @inlinable
     public static func estimated(width: CGFloat, height: CGFloat) -> Self {
         .init(widthDimension: .estimated(width), heightDimension: .estimated(height))
     }
     
     /// Creates a size with absolute point values.
+    @inlinable
     public static func absolute(width: CGFloat, height: CGFloat) -> Self {
         .init(widthDimension: .absolute(width), heightDimension: .absolute(height))
     }
