@@ -9,7 +9,7 @@ import UIKit
 
 extension UICollectionView {
     
-    /// Deselects selected items.
+    /// Deselects all selected items.
     ///
     /// If the `allowsSelection` property is `false`, calling this method has no effect.
     /// This method does not cause any selection-related delegate methods to be called.
@@ -22,7 +22,10 @@ extension UICollectionView {
         }
     }
     
-    /// Deselects selected items using the transition coordinator.
+    /// Deselects all selected items using the transition coordinator.
+    ///
+    /// If the `allowsSelection` property is `false`, calling this method has no effect.
+    /// This method does not cause any selection-related delegate methods to be called.
     ///
     /// Typically, you can use this method in `viewWillAppear` of the view controller:
     ///

@@ -26,6 +26,11 @@ extension UITableView {
     
     /// Deselects the selected row using the transition coordinator.
     ///
+    /// Calling this method doesn’t cause the delegate to receive a `tableView(_:willDeselectRowAt:)` or `tableView(_:didDeselectRowAt:)` message,
+    /// nor does it send `selectionDidChangeNotification` notifications to observers.
+    ///
+    /// Calling this method doesn’t cause any scrolling to the deselected row.
+    ///
     /// Typically, you can use this method in `viewWillAppear` of the view controller:
     ///
     /// ```
