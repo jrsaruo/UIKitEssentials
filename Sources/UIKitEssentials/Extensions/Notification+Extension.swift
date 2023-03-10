@@ -7,6 +7,7 @@
 
 import UIKit
 
+#if os(iOS)
 extension Notification {
     
     /// The keyboard’s frame at the end of its animation.
@@ -35,3 +36,4 @@ extension Notification {
         return .init(rawValue: animationCurveValue)
     }
 }
+#endif
