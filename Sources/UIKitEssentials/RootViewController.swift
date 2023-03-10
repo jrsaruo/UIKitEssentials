@@ -23,6 +23,28 @@ import UIKit
 /// - Note: Do **NOT** call `addChild` of this view controller.
 public final class RootViewController: UIViewController {
     
+    // MARK: - Overrides
+    
+    public override var childForHomeIndicatorAutoHidden: UIViewController? {
+        children.last
+    }
+    
+    public override var childForScreenEdgesDeferringSystemGestures: UIViewController? {
+        children.last
+    }
+    
+    public override var childForStatusBarHidden: UIViewController? {
+        children.last
+    }
+    
+    public override var childForStatusBarStyle: UIViewController? {
+        children.last
+    }
+    
+    public override var childViewControllerForPointerLock: UIViewController? {
+        children.last
+    }
+    
     // MARK: - Methods
     
     /// Transitions to the specified view controller.
@@ -50,6 +72,13 @@ public final class RootViewController: UIViewController {
         func finishTransition(completed: Bool) {
             if completed {
                 destinationVC.didMove(toParent: self)
+                
+                setNeedsUpdateOfHomeIndicatorAutoHidden()
+                setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+                setNeedsStatusBarAppearanceUpdate()
+                if #available(iOS 14.0, *) {
+                    setNeedsUpdateOfPrefersPointerLocked()
+                }
             }
             completion?(completed)
         }
