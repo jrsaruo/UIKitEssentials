@@ -72,6 +72,13 @@ public final class RootViewController: UIViewController {
         func finishTransition(completed: Bool) {
             if completed {
                 destinationVC.didMove(toParent: self)
+                
+                setNeedsUpdateOfHomeIndicatorAutoHidden()
+                setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+                setNeedsStatusBarAppearanceUpdate()
+                if #available(iOS 14.0, *) {
+                    setNeedsUpdateOfPrefersPointerLocked()
+                }
             }
             completion?(completed)
         }
