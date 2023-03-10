@@ -23,30 +23,6 @@ import UIKit
 /// - Note: Do **NOT** call `addChild` of this view controller.
 public final class RootViewController: UIViewController {
     
-    // MARK: - Overrides
-    
-    public override var childForHomeIndicatorAutoHidden: UIViewController? {
-        children.last
-    }
-    
-    public override var childForScreenEdgesDeferringSystemGestures: UIViewController? {
-        children.last
-    }
-    
-    public override var childForStatusBarHidden: UIViewController? {
-        children.last
-    }
-    
-    public override var childForStatusBarStyle: UIViewController? {
-        children.last
-    }
-    
-    public override var childViewControllerForPointerLock: UIViewController? {
-        children.last
-    }
-    
-    // MARK: - Methods
-    
     /// Transitions to the specified view controller.
     ///
     /// The source view controller instance will be destroyed.
@@ -73,12 +49,14 @@ public final class RootViewController: UIViewController {
             if completed {
                 destinationVC.didMove(toParent: self)
                 
+                #if os(iOS)
                 setNeedsUpdateOfHomeIndicatorAutoHidden()
                 setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
                 setNeedsStatusBarAppearanceUpdate()
                 if #available(iOS 14.0, *) {
                     setNeedsUpdateOfPrefersPointerLocked()
                 }
+                #endif
             }
             completion?(completed)
         }
@@ -95,6 +73,31 @@ public final class RootViewController: UIViewController {
         }
     }
 }
+
+#if os(iOS)
+extension RootViewController {
+    
+    public override var childForStatusBarHidden: UIViewController? {
+        children.last
+    }
+    
+    public override var childForStatusBarStyle: UIViewController? {
+        children.last
+    }
+    
+    public override var childForHomeIndicatorAutoHidden: UIViewController? {
+        children.last
+    }
+    
+    public override var childForScreenEdgesDeferringSystemGestures: UIViewController? {
+        children.last
+    }
+    
+    public override var childViewControllerForPointerLock: UIViewController? {
+        children.last
+    }
+}
+#endif
 
 extension UIViewController {
     
