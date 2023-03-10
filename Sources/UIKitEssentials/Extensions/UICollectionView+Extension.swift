@@ -9,7 +9,20 @@ import UIKit
 
 extension UICollectionView {
     
-    /// Deselects the selected items using the transition coordinator.
+    /// Deselects selected items.
+    ///
+    /// If the `allowsSelection` property is `false`, calling this method has no effect.
+    /// This method does not cause any selection-related delegate methods to be called.
+    ///
+    /// - Parameter animated: Specify `true` to animate the change in the selection or `false` to make the change without animating it.
+    public func deselectSelectedItems(animated: Bool) {
+        guard let indexPathsForSelectedItems else { return }
+        for indexPathForSelectedItem in indexPathsForSelectedItems {
+            deselectItem(at: indexPathForSelectedItem, animated: animated)
+        }
+    }
+    
+    /// Deselects selected items using the transition coordinator.
     ///
     /// Typically, you can use this method in `viewWillAppear` of the view controller:
     ///
