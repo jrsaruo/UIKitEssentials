@@ -9,6 +9,21 @@ import UIKit
 
 extension UITableView {
     
+    /// Deselects all selected rows, with an option to animate the deselection.
+    ///
+    /// Calling this method doesn’t cause the delegate to receive a `tableView(_:willDeselectRowAt:)` or `tableView(_:didDeselectRowAt:)` message,
+    /// nor does it send `selectionDidChangeNotification` notifications to observers.
+    ///
+    /// Calling this method doesn’t cause any scrolling to deselected rows.
+    ///
+    /// - Parameter animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
+    public func deselectSelectedRows(animated: Bool) {
+        guard let indexPathsForSelectedRows else { return }
+        for indexPathForSelectedRow in indexPathsForSelectedRows {
+            deselectRow(at: indexPathForSelectedRow, animated: animated)
+        }
+    }
+    
     /// Deselects the selected row using the transition coordinator.
     ///
     /// Typically, you can use this method in `viewWillAppear` of the view controller:
