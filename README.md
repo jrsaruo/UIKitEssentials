@@ -12,7 +12,7 @@ Essentials for development using UIKit.
 To use the `UIKitEssentials` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/jrsaruo/UIKitEssentials", from: "1.2.0"),
+.package(url: "https://github.com/jrsaruo/UIKitEssentials", from: "1.3.0"),
 ```
 
 and add `UIKitEssentials` as a dependency for your target:

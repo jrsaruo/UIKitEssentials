@@ -9,7 +9,23 @@ import UIKit
 
 extension UICollectionView {
     
-    /// Deselects the selected items using the transition coordinator.
+    /// Deselects all selected items.
+    ///
+    /// If the `allowsSelection` property is `false`, calling this method has no effect.
+    /// This method does not cause any selection-related delegate methods to be called.
+    ///
+    /// - Parameter animated: Specify `true` to animate the change in the selection or `false` to make the change without animating it.
+    public func deselectSelectedItems(animated: Bool) {
+        guard let indexPathsForSelectedItems else { return }
+        for indexPathForSelectedItem in indexPathsForSelectedItems {
+            deselectItem(at: indexPathForSelectedItem, animated: animated)
+        }
+    }
+    
+    /// Deselects all selected items using the transition coordinator.
+    ///
+    /// If the `allowsSelection` property is `false`, calling this method has no effect.
+    /// This method does not cause any selection-related delegate methods to be called.
     ///
     /// Typically, you can use this method in `viewWillAppear` of the view controller:
     ///
@@ -33,22 +49,18 @@ extension UICollectionView {
     ///   - animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
     public func deselectSelectedItems(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
                                       animated: Bool) {
-        guard let indexPathsForSelectedItems = indexPathsForSelectedItems else { return }
-        func deselectSelectedItems() {
-            for indexPathForSelectedItem in indexPathsForSelectedItems {
-                deselectItem(at: indexPathForSelectedItem, animated: animated)
-            }
-        }
-        guard let transitionCoordinator = transitionCoordinator else {
-            deselectSelectedItems()
+        guard let transitionCoordinator else {
+            deselectSelectedItems(animated: animated)
             return
         }
-        transitionCoordinator.animate(alongsideTransition: { _ in
-            deselectSelectedItems()
+        transitionCoordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.deselectSelectedItems(animated: animated)
         }, completion: { [weak self] context in
+            guard let self = self,
+                  let indexPathsForSelectedItems = self.indexPathsForSelectedItems else { return }
             if context.isCancelled {
                 for indexPathForSelectedItem in indexPathsForSelectedItems {
-                    self?.selectItem(at: indexPathForSelectedItem, animated: animated, scrollPosition: [])
+                    self.selectItem(at: indexPathForSelectedItem, animated: animated, scrollPosition: [])
                 }
             }
         })
