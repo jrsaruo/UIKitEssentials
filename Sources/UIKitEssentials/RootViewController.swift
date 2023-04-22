@@ -104,7 +104,10 @@ extension UIViewController {
     /// The root view controller for the current window.
     public var root: RootViewController {
         guard let window = view.window else {
-            preconditionFailure("The view should be added to a window.")
+            guard let root = parent?.root else {
+                preconditionFailure("The view must be added to a window.")
+            }
+            return root
         }
         guard let root = window.rootViewController as? RootViewController else {
             preconditionFailure("The root view controller should be '\(RootViewController.self)'")
