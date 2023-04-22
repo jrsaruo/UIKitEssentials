@@ -51,18 +51,19 @@ extension UITableView {
     ///   - transitionCoordinator: A transition coordinator used to animate the deselection.
     ///                            If `nil`, the deselection will be done with normal animation.
     ///   - animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
-    public func deselectSelectedRows(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
+    public func deselectSelectedRows(with transitionCoordinator: (any UIViewControllerTransitionCoordinator)?,
                                      animated: Bool) {
-        guard let transitionCoordinator = transitionCoordinator else {
+        guard let indexPathsForSelectedRows else { return }
+        guard let transitionCoordinator, animated else {
             deselectSelectedRows(animated: animated)
             return
         }
         transitionCoordinator.animate(alongsideTransition: { [weak self] _ in
             self?.deselectSelectedRows(animated: animated)
         }, completion: { [weak self] context in
-            guard let self,
-                  let indexPathsForSelectedRows = self.indexPathsForSelectedRows else { return }
+            guard let self else { return }
             if context.isCancelled {
+                // Reselect rows
                 for indexPathForSelectedRow in indexPathsForSelectedRows {
                     self.selectRow(at: indexPathForSelectedRow, animated: animated, scrollPosition: .none)
                 }
@@ -98,10 +99,10 @@ extension UITableView {
     ///                            If `nil`, the deselection will be done with normal animation.
     ///   - animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
     @available(*, deprecated, message: "Use deselectSelectedRows(with:animated:) instead.")
-    public func deselectSelectedRow(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
+    public func deselectSelectedRow(with transitionCoordinator: (any UIViewControllerTransitionCoordinator)?,
                                     animated: Bool) {
-        guard let indexPathForSelectedRow = indexPathForSelectedRow else { return }
-        guard let transitionCoordinator = transitionCoordinator else {
+        guard let indexPathForSelectedRow else { return }
+        guard let transitionCoordinator else {
             deselectRow(at: indexPathForSelectedRow, animated: animated)
             return
         }
