@@ -51,7 +51,7 @@ extension UITableView {
     ///   - transitionCoordinator: A transition coordinator used to animate the deselection.
     ///                            If `nil`, the deselection will be done with normal animation.
     ///   - animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
-    public func deselectSelectedRows(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
+    public func deselectSelectedRows(with transitionCoordinator: (any UIViewControllerTransitionCoordinator)?,
                                      animated: Bool) {
         guard let indexPathsForSelectedRows else { return }
         guard let transitionCoordinator, animated else {
@@ -99,7 +99,7 @@ extension UITableView {
     ///                            If `nil`, the deselection will be done with normal animation.
     ///   - animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
     @available(*, deprecated, message: "Use deselectSelectedRows(with:animated:) instead.")
-    public func deselectSelectedRow(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
+    public func deselectSelectedRow(with transitionCoordinator: (any UIViewControllerTransitionCoordinator)?,
                                     animated: Bool) {
         guard let indexPathForSelectedRow else { return }
         guard let transitionCoordinator else {

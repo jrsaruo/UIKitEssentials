@@ -47,7 +47,7 @@ extension UICollectionView {
     ///   - transitionCoordinator: A transition coordinator used to animate the deselection.
     ///                            If `nil`, the deselection will be done with normal animation.
     ///   - animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
-    public func deselectSelectedItems(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
+    public func deselectSelectedItems(with transitionCoordinator: (any UIViewControllerTransitionCoordinator)?,
                                       animated: Bool) {
         guard let indexPathsForSelectedItems else { return }
         guard let transitionCoordinator, animated else {
