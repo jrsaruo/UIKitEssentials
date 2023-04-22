@@ -31,6 +31,15 @@ class RootViewControllerTests: XCTestCase {
     
     func testUIViewControllerRoot() {
         XCTAssertEqual(childVC.root, rootVC)
+        
+        let childVC2 = UIViewController()
+        let navigationController = UINavigationController(rootViewController: childVC2)
+        rootVC.transition(to: navigationController, animated: false)
+        XCTAssertEqual(childVC2.root, rootVC)
+        
+        let childVC3 = UIViewController()
+        navigationController.pushViewController(childVC3, animated: false)
+        XCTAssertEqual(childVC2.root, rootVC)
     }
     
     func testTransition() {
