@@ -101,8 +101,8 @@ extension UITableView {
     @available(*, deprecated, message: "Use deselectSelectedRows(with:animated:) instead.")
     public func deselectSelectedRow(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
                                     animated: Bool) {
-        guard let indexPathForSelectedRow = indexPathForSelectedRow else { return }
-        guard let transitionCoordinator = transitionCoordinator else {
+        guard let indexPathForSelectedRow else { return }
+        guard let transitionCoordinator else {
             deselectRow(at: indexPathForSelectedRow, animated: animated)
             return
         }
