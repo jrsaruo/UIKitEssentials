@@ -49,6 +49,7 @@ extension UICollectionView {
     ///   - animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
     public func deselectSelectedItems(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
                                       animated: Bool) {
+        guard let indexPathsForSelectedItems else { return }
         guard let transitionCoordinator else {
             deselectSelectedItems(animated: animated)
             return
@@ -56,9 +57,9 @@ extension UICollectionView {
         transitionCoordinator.animate(alongsideTransition: { [weak self] _ in
             self?.deselectSelectedItems(animated: animated)
         }, completion: { [weak self] context in
-            guard let self = self,
-                  let indexPathsForSelectedItems = self.indexPathsForSelectedItems else { return }
+            guard let self else { return }
             if context.isCancelled {
+                // Reselect items
                 for indexPathForSelectedItem in indexPathsForSelectedItems {
                     self.selectItem(at: indexPathForSelectedItem, animated: animated, scrollPosition: [])
                 }

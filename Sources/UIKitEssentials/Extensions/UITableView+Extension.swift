@@ -53,16 +53,17 @@ extension UITableView {
     ///   - animated: `true` if you want to animate the deselection, and `false` if the change should be immediate.
     public func deselectSelectedRows(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
                                      animated: Bool) {
-        guard let transitionCoordinator = transitionCoordinator else {
+        guard let indexPathsForSelectedRows else { return }
+        guard let transitionCoordinator else {
             deselectSelectedRows(animated: animated)
             return
         }
         transitionCoordinator.animate(alongsideTransition: { [weak self] _ in
             self?.deselectSelectedRows(animated: animated)
         }, completion: { [weak self] context in
-            guard let self,
-                  let indexPathsForSelectedRows = self.indexPathsForSelectedRows else { return }
+            guard let self else { return }
             if context.isCancelled {
+                // Reselect rows
                 for indexPathForSelectedRow in indexPathsForSelectedRows {
                     self.selectRow(at: indexPathForSelectedRow, animated: animated, scrollPosition: .none)
                 }
