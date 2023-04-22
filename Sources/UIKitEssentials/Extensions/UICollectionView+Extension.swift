@@ -50,7 +50,7 @@ extension UICollectionView {
     public func deselectSelectedItems(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
                                       animated: Bool) {
         guard let indexPathsForSelectedItems else { return }
-        guard let transitionCoordinator else {
+        guard let transitionCoordinator, animated else {
             deselectSelectedItems(animated: animated)
             return
         }

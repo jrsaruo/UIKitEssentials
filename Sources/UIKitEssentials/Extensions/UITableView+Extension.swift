@@ -54,7 +54,7 @@ extension UITableView {
     public func deselectSelectedRows(with transitionCoordinator: UIViewControllerTransitionCoordinator?,
                                      animated: Bool) {
         guard let indexPathsForSelectedRows else { return }
-        guard let transitionCoordinator else {
+        guard let transitionCoordinator, animated else {
             deselectSelectedRows(animated: animated)
             return
         }
