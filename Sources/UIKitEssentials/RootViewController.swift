@@ -35,12 +35,18 @@ open class RootViewController: UIViewController {
                          animated: Bool,
                          completion: ((_ completed: Bool) -> Void)? = nil) {
         assert(children.count <= 1)
+        let previousChild: UIViewController?
         if let currentChild = children.first {
+            currentChild.beginAppearanceTransition(false, animated: animated)
             currentChild.willMove(toParent: nil)
             currentChild.view.removeFromSuperview()
             currentChild.removeFromParent()
+            previousChild = currentChild
+        } else {
+            previousChild = nil
         }
         
+        destinationVC.beginAppearanceTransition(true, animated: animated)
         addChild(destinationVC)
         view.addSubview(destinationVC.view)
         destinationVC.view.frame = view.bounds
@@ -48,6 +54,8 @@ open class RootViewController: UIViewController {
         func finishTransition(completed: Bool) {
             if completed {
                 destinationVC.didMove(toParent: self)
+                previousChild?.endAppearanceTransition()
+                destinationVC.endAppearanceTransition()
                 
                 #if os(iOS)
                 setNeedsUpdateOfHomeIndicatorAutoHidden()
