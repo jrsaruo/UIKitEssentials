@@ -10,8 +10,36 @@ import UIKitEssentials
 
 class RootViewControllerTests: XCTestCase {
     
+    final class ViewController: UIViewController {
+        
+        private(set) var viewWillAppearCalledCount = 0
+        private(set) var viewDidAppearCalledCount = 0
+        private(set) var viewWillDisappearCalledCount = 0
+        private(set) var viewDidDisappearCalledCount = 0
+        
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            viewWillAppearCalledCount += 1
+        }
+        
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            viewDidAppearCalledCount += 1
+        }
+        
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            viewWillDisappearCalledCount += 1
+        }
+        
+        override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+            viewDidDisappearCalledCount += 1
+        }
+    }
+    
     private var rootVC: RootViewController!
-    private var childVC: UIViewController!
+    private var childVC: ViewController!
     
     override func setUp() {
         rootVC = RootViewController()
@@ -20,7 +48,7 @@ class RootViewControllerTests: XCTestCase {
         window.rootViewController = rootVC
         window.makeKeyAndVisible()
         
-        childVC = UIViewController()
+        childVC = ViewController()
         rootVC.transition(to: childVC, animated: false)
     }
     
@@ -42,7 +70,7 @@ class RootViewControllerTests: XCTestCase {
         XCTAssertEqual(childVC2.root, rootVC)
     }
     
-    func testTransition() {
+    func testTransition_viewHierarchy() {
         XCTAssertEqual(rootVC.view.subviews, [childVC.view])
         
         let destinationVC = UIViewController()
@@ -52,5 +80,31 @@ class RootViewControllerTests: XCTestCase {
         }
         wait(for: [completionCalled], timeout: 0.1)
         XCTAssertEqual(rootVC.view.subviews, [destinationVC.view])
+    }
+    
+    func testTransition_lifecycle() {
+        // Arrange
+        let destinationVC = ViewController()
+        let transitionDidComplete = expectation(
+            description: "The transition completed."
+        )
+        
+        // Act
+        rootVC.transition(to: destinationVC, animated: true) { _ in
+            transitionDidComplete.fulfill()
+        }
+        
+        // Assert
+        XCTAssertEqual(childVC.viewWillDisappearCalledCount, 1)
+        XCTAssertEqual(childVC.viewDidDisappearCalledCount, 0)
+        XCTAssertEqual(destinationVC.viewWillAppearCalledCount, 1)
+        XCTAssertEqual(destinationVC.viewDidAppearCalledCount, 0)
+        
+        wait(for: [transitionDidComplete])
+        
+        XCTAssertEqual(childVC.viewWillDisappearCalledCount, 1)
+        XCTAssertEqual(childVC.viewDidDisappearCalledCount, 1)
+        XCTAssertEqual(destinationVC.viewWillAppearCalledCount, 1)
+        XCTAssertEqual(destinationVC.viewDidAppearCalledCount, 1)
     }
 }
