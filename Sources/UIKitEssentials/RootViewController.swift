@@ -57,10 +57,12 @@ open class RootViewController: UIViewController {
                 previousChild?.endAppearanceTransition()
                 destinationVC.endAppearanceTransition()
                 
-                #if os(iOS)
+                #if !os(tvOS)
                 setNeedsUpdateOfHomeIndicatorAutoHidden()
                 setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+                #if !os(visionOS)
                 setNeedsStatusBarAppearanceUpdate()
+                #endif
                 if #available(iOS 14.0, *) {
                     setNeedsUpdateOfPrefersPointerLocked()
                 }
