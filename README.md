@@ -4,7 +4,7 @@ Essentials for development using UIKit.
 
 ## Requirements
 
-- iOS 9.0+ / tvOS 9.0+
+- iOS 12.0+ / tvOS 12.0+ / visionOS 1.0+
 - Swift 5.6+
 
 ## Using UIKitEssentials in your project
