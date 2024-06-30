@@ -21,7 +21,7 @@ import UIKit
 /// ```
 ///
 /// - Note: Do **NOT** call `addChild` of this view controller.
-public final class RootViewController: UIViewController {
+open class RootViewController: UIViewController {
     
     /// Transitions to the specified view controller.
     ///
@@ -31,9 +31,9 @@ public final class RootViewController: UIViewController {
     ///   - animated: If `true`, the transition will be animated with a cross dissolve.
     ///   - completion: A closure to execute at the end of the transition.
     ///                 This closure has no return value and takes a single `Bool` argument that indicates whether or not the transition actually finished.
-    public func transition(to destinationVC: UIViewController,
-                           animated: Bool,
-                           completion: ((_ completed: Bool) -> Void)? = nil) {
+    open func transition(to destinationVC: UIViewController,
+                         animated: Bool,
+                         completion: ((_ completed: Bool) -> Void)? = nil) {
         assert(children.count <= 1)
         if let currentChild = children.first {
             currentChild.willMove(toParent: nil)
