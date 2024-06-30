@@ -21,7 +21,7 @@ import UIKit
 /// ```
 ///
 /// - Note: Do **NOT** call `addChild` of this view controller.
-public final class RootViewController: UIViewController {
+open class RootViewController: UIViewController {
     
     /// Transitions to the specified view controller.
     ///
@@ -31,16 +31,22 @@ public final class RootViewController: UIViewController {
     ///   - animated: If `true`, the transition will be animated with a cross dissolve.
     ///   - completion: A closure to execute at the end of the transition.
     ///                 This closure has no return value and takes a single `Bool` argument that indicates whether or not the transition actually finished.
-    public func transition(to destinationVC: UIViewController,
-                           animated: Bool,
-                           completion: ((_ completed: Bool) -> Void)? = nil) {
+    open func transition(to destinationVC: UIViewController,
+                         animated: Bool,
+                         completion: ((_ completed: Bool) -> Void)? = nil) {
         assert(children.count <= 1)
+        let previousChild: UIViewController?
         if let currentChild = children.first {
+            currentChild.beginAppearanceTransition(false, animated: animated)
             currentChild.willMove(toParent: nil)
             currentChild.view.removeFromSuperview()
             currentChild.removeFromParent()
+            previousChild = currentChild
+        } else {
+            previousChild = nil
         }
         
+        destinationVC.beginAppearanceTransition(true, animated: animated)
         addChild(destinationVC)
         view.addSubview(destinationVC.view)
         destinationVC.view.frame = view.bounds
@@ -48,11 +54,15 @@ public final class RootViewController: UIViewController {
         func finishTransition(completed: Bool) {
             if completed {
                 destinationVC.didMove(toParent: self)
+                previousChild?.endAppearanceTransition()
+                destinationVC.endAppearanceTransition()
                 
-                #if os(iOS)
+                #if !os(tvOS)
                 setNeedsUpdateOfHomeIndicatorAutoHidden()
                 setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+                #if !os(visionOS)
                 setNeedsStatusBarAppearanceUpdate()
+                #endif
                 if #available(iOS 14.0, *) {
                     setNeedsUpdateOfPrefersPointerLocked()
                 }
